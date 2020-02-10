@@ -13,7 +13,7 @@ void cifrar(vernam micifrado, string msj, string mykey){
     cout << "Longitud del mensaje: " <<  micifrado.c2binarystring(msj).length() << endl << endl;
     
     while(mykey.size() != micifrado.c2binarystring(msj).length()){
-        cout << "> Introducir key en binario (Debe tener " << micifrado.c2binarystring(msj).length() << " digitos): "; // misma longitud que el mensaje en binario
+        cout << "> Introducir key en binario (Debe tener " << micifrado.c2binarystring(msj).length() << " digitos): ";
         cin >> mykey;
     }
     micifrado.set_key(mykey);
@@ -33,7 +33,7 @@ void descifrar(vernam micifrado, string msj, string mykey){
     cout << "Longitud del mensaje: " << micifrado.c2binarystring(msj).length() << endl << endl;
 
     while(mykey.size() != micifrado.c2binarystring(msj).length()){
-        cout << "> Introducir key en binario (Debe tener " << micifrado.c2binarystring(msj).length() << " digitos): "; // misma longitud que el mensaje en binario
+        cout << "> Introducir key en binario (Debe tener " << micifrado.c2binarystring(msj).length() << " digitos): "; 
         cin >> mykey;
     }
     micifrado.set_key(mykey);
