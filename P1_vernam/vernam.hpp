@@ -1,24 +1,43 @@
 #pragma once
 #include <string>
+#include <bitset>
+#include <vector>
 
 using namespace std;
 
 class vernam{
 
 private:
-    string key;
+    vector<bitset<8>> key_; // Clave
+
+    vector<bitset<8>> msj_bin_; // mensaje original en binario
+
+    string msj_cifrado_; // Mensaje cifrado
+    vector<bitset<8>> msj_cifrado_bin_; // Mensaje cifrado en binario
+
+    string msj_descifrado_; // Mensaje descifrado
+    vector<bitset<8>> msj_descifrado_bin_; // Mensaje descifrado en binario
 
 public:
     vernam();
     ~vernam();
+
+    void clean();
+
     void set_key (string new_key);
     string cifrado (string msj_original);
-    // string descifrado (string msj_cifrado);
-    string convert_binary (string msj);
-    string convert_text (string msj);
+    string descifrado (string msj_cifrado);
+
+    string get_msj_bin(); // Mensaje original en binario
+    string get_msj_cifrado(); // Mensaje cifrado
+    string get_msj_cifrado_bin(); // Mensaje cifrado en binario
+    string get_msj_descifrado(); // Mensaje descifrado
+    string get_msj_descifrado_bin(); // Mensaje descifrado en binario
+
+    string c2binarystring(string msj);
+    
 
 private:
-    string set_binary(string m, int num);
-    char set_char(int entero);
-    unsigned set_int(char letra);
+    vector<bitset<8>> convert_binary (string msj);
+    string convert_bin2string(vector<bitset<8>> msj);
 };
