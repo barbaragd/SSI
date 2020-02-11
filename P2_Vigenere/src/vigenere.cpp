@@ -45,7 +45,12 @@ std::string vigenere::descifrar(std::string msj)
     {
         pos_key = key_[i % tmn] - 65;
         pos_msj = msj[i] - 65;
-        pos = (pos_key - pos_msj);
+        if(pos_msj - pos_key >= 0){
+            pos = (pos_msj - pos_key) % alfabeto_.size();
+        }
+        else{
+            pos = (pos_msj - pos_key +  alfabeto_.size()) % alfabeto_.size();
+        }
         msj_descifrado_[i] = alfabeto_[pos];
     }
     return msj_descifrado_;

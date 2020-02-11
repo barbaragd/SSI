@@ -45,7 +45,7 @@ std::string limpiar_espacios(char *msj, int size)
 }
 
 
-void main()
+int main()
 {
 
     int opcion = 1;
