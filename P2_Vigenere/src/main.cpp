@@ -5,43 +5,6 @@
 #include <vector>
 #include <algorithm> // para eliminar los espacios
 
-vigenere establecer_llave(vigenere mic)
-{
-    int op;
-    std::string llave;
-    int size = 0;
-    std::cout << "---------------------------------------" << std::endl;
-    std::cout << "    >>> ¿Clave aleatoria? <<<" << std::endl;
-    std::cout << "1\tIntroducir clave por teclado" << std::endl;
-    std::cout << "2\tEstablecer una clave aleatoria" << std::endl;
-    std::cout << "---------------------------------------" << std::endl;
-    std::cout << "> Introduzca la opción: ";
-    std::cin >> op;
-    std::cout << "---------------------------------------" << std::endl;
-    switch (op)
-    {
-    case 1:
-        std::cout << "> Introducir clave: ";
-        std::cin >> llave;
-        mic.set_key(llave);
-        return mic;
-        break;
-
-    case 2:
-        std::cout << "> Introducir tamaño de la clave: ";
-        std::cin >> size;
-        mic.set_random_key(size);
-        return mic;
-        break;
-
-    default:
-        std::cout << "Se introducirá la clave por defecto 'MISION' " << std::endl;
-        mic.set_key("MISION");
-        return mic;
-        break;
-    }
-}
-
 int main()
 {
 
