@@ -3,106 +3,128 @@
 #include "../include/vigenere.hpp"
 #include <string>
 #include <vector>
+#include <algorithm> // para eliminar los espacios
 
-/***
- * Función para limpiar los espacios del mensaje introducido
- * por teclado.
- ***/
-std::string limpiar_espacios(char *msj, int size)
+vigenere establecer_llave(vigenere mic)
 {
-    std::vector<char> aux; // vector de char auxiliar
-    int i = 0;
-    int newsize = 0; // el nuevo tamaño del mensaje
-    int c;
-    while (i < size) // recorrer todo el msj
+    int op;
+    std::string llave;
+    int size = 0;
+    std::cout << "---------------------------------------" << std::endl;
+    std::cout << "    >>> ¿Clave aleatoria? <<<" << std::endl;
+    std::cout << "1\tIntroducir clave por teclado" << std::endl;
+    std::cout << "2\tEstablecer una clave aleatoria" << std::endl;
+    std::cout << "---------------------------------------" << std::endl;
+    std::cout << "> Introduzca la opción: ";
+    std::cin >> op;
+    std::cout << "---------------------------------------" << std::endl;
+    switch (op)
     {
-        if (msj[i] == ' ')
-        {
-            i++; // si es un espacio no hacemos nada
-        }
-        else
-        {   
-            aux.push_back(msj[i]); // si no es un espacio, introducimos este caracter en el vector auxiliar
-            c = msj[i]; // cojo el numero de la tabla ascii de ese caracter
-            if (c >= 65 && c <= 90) // compruebo que este dentro del rango del alfabeto (de 65 a 90)
-            {
-                newsize++; // aumento el valor del tamaño del nuevo mensaje
-            }
-            i++;
-        }
-    }
+    case 1:
+        std::cout << "> Introducir clave: ";
+        std::cin >> llave;
+        mic.set_key(llave);
+        return mic;
+        break;
 
-    std::string mensaje;
-    mensaje.resize(newsize);
-    long unsigned int j = 0;
-    while (j < mensaje.size()) // copio todo el mensaje en el string
-    {
-        mensaje[j] = aux[j];
-        j++;
-    }
+    case 2:
+        std::cout << "> Introducir tamaño de la clave: ";
+        std::cin >> size;
+        mic.set_random_key(size);
+        return mic;
+        break;
 
-    return mensaje;
+    default:
+        std::cout << "Se introducirá la clave por defecto 'MISION' " << std::endl;
+        mic.set_key("MISION");
+        return mic;
+        break;
+    }
 }
-
 
 int main()
 {
 
+    int op;
     int opcion = 1;
-    char msj[500];
-
-    std::string llave;
     std::string msj_res;
     std::string mensaje;
+    std::string llave;
+    int size = 0;
 
     while (opcion != 0)
     {
-        std::cout << "-------------------------" << std::endl;
-        std::cout << ">> Cifrado de Vigenere <<" << std::endl;
-        std::cout << "-------------------------" << std::endl;
-        std::cout << "1\tCifrar" << std::endl;
-        std::cout << "2\tDescifrar" << std::endl;
-        std::cout << "0\tSalir" << std::endl;
-        std::cout << "-------------------------" << std::endl;
-        std::cout << "Introduzca la opción: ";
+        std::cout << "---------------------------------------" << std::endl;
+        std::cout << " >>>>> Cifrado de Vigenere <<<<<" << std::endl;
+        std::cout << "---------------------------------------" << std::endl;
+        std::cout << "\t1\tCifrar" << std::endl;
+        std::cout << "\t2\tDescifrar" << std::endl;
+        std::cout << "\t0\tSalir" << std::endl;
+        std::cout << "---------------------------------------" << std::endl;
+        std::cout << "> Introduzca la opción: ";
         std::cin >> opcion;
-        std::cout << "-------------------------" << std::endl;
+        std::cout << "---------------------------------------" << std::endl;
 
         vigenere micifrado;
 
-        switch (opcion)
+        switch (opcion) // para establecer o no una clave aleatoria
         {
         case 1:
             std::cout << "> Introduzca el mensaje: ";
             std::cin.ignore();
-            std::cin.getline(msj, 30);
-            mensaje = limpiar_espacios(msj, 30);
-            std::cout << "> Introduzca la clave: ";
-            std::cin >> llave;
+            std::getline(std::cin, mensaje);
+            mensaje.erase(std::remove(mensaje.begin(), mensaje.end(), ' '), mensaje.end());
 
-            micifrado.set_key(llave);
+            std::cout << "---------------------------------------" << std::endl;
+            std::cout << "    >>> ¿Clave aleatoria? <<<" << std::endl;
+            std::cout << "1\tIntroducir clave por teclado" << std::endl;
+            std::cout << "2\tEstablecer una clave aleatoria" << std::endl;
+            std::cout << "---------------------------------------" << std::endl;
+            std::cout << "> Introduzca la opción: ";
+            std::cin >> op;
+            std::cout << "---------------------------------------" << std::endl;
+            switch (op)
+            {
+            case 1:
+                std::cout << "> Introducir clave: ";
+                std::cin >> llave;
+                micifrado.set_key(llave);
+                break;
+
+            case 2:
+                std::cout << "> Introducir tamaño de la clave: ";
+                std::cin >> size;
+                micifrado.set_random_key(size);
+                break;
+
+            default:
+                std::cout << "Se introducirá la clave por defecto 'MISION' " << std::endl;
+                micifrado.set_key("MISION");
+                break;
+            }
+
             msj_res = micifrado.cifrar(mensaje);
-            std::cout << "-------------------------" << std::endl;
+            std::cout << "---------------------------------------" << std::endl;
             std::cout << "[!] Mensaje cifrado: " << msj_res << std::endl;
             break;
 
         case 2:
             std::cout << "> Introduzca el mensaje: ";
             std::cin.ignore();
-            std::cin.getline(msj, 30);
-            mensaje = limpiar_espacios(msj, 30);
-            std::cout << "> Introduzca la clave: ";
-            std::cin >> llave;
+            std::getline(std::cin, mensaje);
 
+            std::cout << "> Introducir clave: ";
+            std::cin >> llave;
             micifrado.set_key(llave);
-            msj_res = micifrado.descifrar(msj);
-            std::cout << "-------------------------" << std::endl;
+
+            msj_res = micifrado.descifrar(mensaje);
+            std::cout << "---------------------------------------" << std::endl;
             std::cout << "[!] Mensaje descifrado: " << msj_res << std::endl;
             break;
 
         case 0:
             std::cout << "\tSaliendo..." << std::endl;
-            std::cout << "-------------------------" << std::endl;
+            std::cout << "---------------------------------------" << std::endl;
             break;
 
         default:

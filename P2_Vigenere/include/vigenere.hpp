@@ -14,6 +14,7 @@ public:
     vigenere();
     ~vigenere();
     void set_key(std::string key);
+    std::string set_random_key(int size);
     std::string cifrar(std::string msj);
     std::string descifrar(std::string msj);
 
