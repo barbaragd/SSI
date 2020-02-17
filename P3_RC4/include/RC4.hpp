@@ -7,7 +7,7 @@ class RC4
 {
 private:
     std::vector<int> key_;
-    std::vector<int> S_; // creo que sería un vector de bitset de 32 bits
+    std::vector<int> S_;
     std::string msj_cif_;
     std::vector<std::bitset<8>> msj_cif_bin_;
 

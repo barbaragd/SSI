@@ -8,6 +8,4 @@ int main() {
 
     RC4 micifrado(millave);
     micifrado.cifrar("1 34");
-    
-    // std::cout << micifrado.cifrar("1 34");
 }
