@@ -37,20 +37,94 @@ std::vector<int> string2v_int(std::string msj)
 
 int main()
 {
+    int opcion = 1;
     std::vector<int> millave;
     std::vector<int> mimsj;
-
     std::string msj;
-    std::cout << "Intro msj: ";
-    std::cin >> msj;
-    mimsj = string2v_int(msj);
-
     std::string key;
-    std::cout << "Intro key: ";
-    std::cin >> key;
-    millave = string2v_int(key);
-    
-    RC4 micifrado(millave);
-    micifrado.cifrar(mimsj);
+    int op = 1;
+    int size = 0;
 
+    while (opcion != 0)
+    {
+        std::cout << "--------------------------------------------" << std::endl;
+        std::cout << ">>> Cifrado en flujo RC4 <<<" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
+        std::cout << "1\tCifrar" << std::endl;
+        std::cout << "2\tDescifrar" << std::endl;
+        std::cout << "0\tSalir" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
+        std::cout << " > Introduzca la opción: ";
+        std::cin >> opcion;
+        std::cout << "--------------------------------------------" << std::endl;
+
+        RC4 micifrado;
+
+        switch (opcion)
+        {
+        case 1:
+            std::cout << " > Introduzca el mensaje: ";
+            std::cin >> msj;
+            mimsj = string2v_int(msj);
+            std::cout << "--------------------------------------------" << std::endl;
+            std::cout << " >> Establecer llave << " << std::endl;
+            std::cout << "--------------------------------------------" << std::endl;
+            std::cout << "1\tIntroducir llave por teclado" << std::endl;
+            std::cout << "2\tEstablecer la llave aleatoria" << std::endl;
+            std::cout << "*\tEstablecer la llave por defecto" << std::endl;
+            std::cout << "--------------------------------------------" << std::endl;
+            std::cout << " > Introduzca la opción: ";
+            std::cin >> op;
+            std::cout << "--------------------------------------------" << std::endl;
+
+            switch (op)
+            {
+            case 1:
+                std::cout << " > Introduzca la llave: ";
+                std::cin >> key;
+                millave = string2v_int(key);
+                micifrado.set_key(millave);
+                break;
+
+            case 2:
+                std::cout << " > Introduzca tamaño de la llave: ";
+                std::cin >> size;
+                micifrado.set_random_key(size);
+                break;
+
+            default:
+                std::cout << " > Se introducirá la llave por defecto: 1,34" << std::endl;
+                millave = string2v_int("2,5");
+                micifrado.set_key(millave);
+                break;
+            }
+
+            std::cout << "--------------------------------------------" << std::endl;
+            micifrado.cifrar(mimsj);
+            micifrado.write();
+            break;
+
+        case 2:
+            std::cout << " > Introduzca el mensaje: ";
+            std::cin >> msj;
+            mimsj = string2v_int(msj);
+            std::cout << "--------------------------------------------" << std::endl;
+            std::cout << " > Introduzca la llave: ";
+            std::cin >> key;
+            millave = string2v_int(key);
+            std::cout << "--------------------------------------------" << std::endl;
+            micifrado.set_key(millave);
+            micifrado.cifrar(mimsj);
+            micifrado.write();
+            break;
+
+        case 0:
+            std::cout << "\tSaliendo..." << std::endl;
+            break;
+
+        default:
+            std::cout << "\tOpción incorrecta." << std::endl;
+            break;
+        }
+    }
 }

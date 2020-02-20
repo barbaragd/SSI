@@ -1,11 +1,9 @@
 #include <iostream>
 #include "../include/RC4.hpp"
+#include <time.h>
 
-RC4::RC4(std::vector<int> key): key_(key)
+RC4::RC4()
 {
-    i_ = 0;
-    j_ = 0;
-    KSA();
 }
 
 RC4::~RC4()
@@ -14,7 +12,26 @@ RC4::~RC4()
     key_.clear();
 }
 
-void RC4::KSA(){
+void RC4::set_key(std::vector<int> key)
+{
+    key_ = key;
+}
+
+void RC4::set_random_key(int size){
+
+    srand(time(NULL));
+    std::vector<int> llave;
+    std::cout << "[!] Llave aleatoria: ";
+    for (int i=0; i<size; i++){
+        key_.push_back(rand() % 255);
+        llave.push_back(key_[i]);
+        std::cout << llave[i] << ",";
+    }
+    std::cout << std::endl;
+}
+
+void RC4::KSA()
+{
     S_.resize(256);
     int aux;
     for (int i = 0; i < 256; i++)
@@ -45,20 +62,23 @@ int RC4::PRGA()
 
 void RC4::cifrar(std::vector<int> msj)
 {
+    S_.clear();
+    i_ = 0;
+    j_ = 0;
+    KSA();
     msj_cif_bin_.resize(msj.size());
     std::bitset<8> aux;
-    for(long unsigned int i=0; i<msj.size(); i++){
+    for (long unsigned int i = 0; i < msj.size(); i++)
+    {
         aux = std::bitset<8>(msj[i]) ^ std::bitset<8>(PRGA());
         msj_cif_bin_[i] = aux;
-        std::cout << msj_cif_bin_[i] << std::endl;
     }
-    reset();
 }
 
-
-void RC4::reset(){
-    S_.clear();
-    i_=0;
-    j_=0;
-    KSA();   
+void RC4::write()
+{
+    for (long unsigned int i = 0; i < msj_cif_bin_.size(); i++)
+    {
+        std::cout << msj_cif_bin_[i] << std::endl;
+    }
 }
