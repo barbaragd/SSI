@@ -1,4 +1,6 @@
 #include "../include/a5.hpp"
+#include <iostream>
+
 
 a5::a5(std::vector<std::bitset<1>> va, std::vector<std::bitset<1>> vb, std::vector<std::bitset<1>> vc)
 {
@@ -6,9 +8,13 @@ a5::a5(std::vector<std::bitset<1>> va, std::vector<std::bitset<1>> vb, std::vect
     std::bitset<1> aux;
 
     // semillas insertadas
-    insertar_semilla(va, a_);
-    insertar_semilla(vb, b_);
-    insertar_semilla(vc, c_);
+    a_.resize(19);
+    b_.resize(22);
+    c_.resize(23);
+
+    a_ = insertar_semilla(va, a_);
+    b_ = insertar_semilla(vb, b_);
+    c_ = insertar_semilla(vc, c_);
 
     // polinomios : vector de punteros a las pos correspondientes del polinomio
     for (auto it = a_.begin(); it != a_.end(); it++)
@@ -58,9 +64,29 @@ a5::~a5()
 {
 }
 
+std::bitset<1> a5::cifrar(){
+    mayoria();
+    // det_desplazar();
+    // return z_[z_.size()-1];
+}
+
 void a5::mayoria()
 { // obtengo el bit mayoría guardado en el atributo mayoria_
-    mayoria_ = *a9 ^ *b11 ^ *c11;
+    // mayoria_ = *a9 ^ *b11 ^ *c11;
+    
+    // ESTO ES BASURA ///////////////////////////////////////
+    // int i=0;
+    // std::cout << a_.size() << std::endl;
+    // for (auto it = a_.begin(); it != a_.end(); it++){
+    //     std::cout << i << ": " << *it << std::endl;
+    //     i++;
+    // }
+    // ESTO ES BASURA ///////////////////////////////////////
+
+    // ESTO TAMBIEN ES BASURA ///////////////////////////////////////
+    std::cout << *a9 << std::endl;
+    // ESTO TAMBIEN ES BASURA ///////////////////////////////////////
+
 }
 
 /**
@@ -104,7 +130,7 @@ void a5::det_desplazar()
         auxc = c_.back();
     }
 
-    z_.push_back(auxa ^ auxb ^ auxc); 
+    z_.push_back(auxa ^ auxb ^ auxc);
 }
 
 /**
@@ -114,14 +140,14 @@ void a5::det_desplazar()
  * con punteros a dichas posiciones (que son bits).
  * Al calcular el nuevo valor del primer bit, lo introducimos en el registro.
  * Retornamos el valor del bit en la posición más alta.
- */ 
+ */
 std::bitset<1> a5::desplazar(std::list<std::bitset<1>> x, std::vector<std::bitset<1> *> pol_x)
 {
     std::bitset<1> aux = x.back();
     x.pop_back();
 
     std::bitset<1> r_xor = *pol_x[0];
-    for (int i = 1; i < pol_x.size(); i++)
+    for (long unsigned int i = 1; i < pol_x.size(); i++)
     {
         r_xor ^= *pol_x[i];
     }
@@ -135,15 +161,22 @@ std::bitset<1> a5::desplazar(std::list<std::bitset<1>> x, std::vector<std::bitse
  * Como el registro se encuentra con las posicones en orden invertido, empezamos
  * a introducir los valores desde la última posición que sería la pos 0 del 
  * vector v. 
- */ 
-void a5::insertar_semilla(std::vector<std::bitset<1>> v, std::list<std::bitset<1>> x)
+ */
+std::list<std::bitset<1>> a5::insertar_semilla(std::vector<std::bitset<1>> v, std::list<std::bitset<1>> x)
 {
     auto it = x.end();
-    int i = 0;
-    while (it != x.begin() && i < v.size())
+    auto fin = x.begin();
+    // fin++;
+    long unsigned int i = 0;
+    std::cout << "tamaño: " << v.size() << std::endl;
+    while (it != fin && i < v.size())
     {
         x.insert(it, v[i]);
+        std::cout << i << ":" << (*it) << " | ";
         it--;
         i++;
     }
+    std::cout << std::endl;
+
+    return x;
 }

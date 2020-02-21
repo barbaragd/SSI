@@ -27,10 +27,11 @@ private:
 public:
     a5(std::vector<std::bitset<1>> a, std::vector<std::bitset<1>> b, std::vector<std::bitset<1>> c);
     ~a5();
+    std::bitset<1> cifrar();
 
 private:
     void mayoria(); // calcular el bit mayoria
     void det_desplazar(); // determinar quienes se desplazan
     std::bitset<1> desplazar(std::list<std::bitset<1>> x, std::vector<std::bitset<1>*> pol_x); // desplazar y obtengo el bit de salida
-    void insertar_semilla(std::vector<std::bitset<1>> v, std::list<std::bitset<1>> x);
+    std::list<std::bitset<1>> insertar_semilla(std::vector<std::bitset<1>> v, std::list<std::bitset<1>> x);
 };
