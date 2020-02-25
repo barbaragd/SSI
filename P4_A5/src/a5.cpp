@@ -178,12 +178,12 @@ void a5::det_desplazar()
 }
 
 /**
- * Guardamos el valor que se encuentra en la pos más alta del registro y luego lo eliminamos de
- * dicho registro. Luego, calculamos la xor de todos los bits que se encuentren en las pos
- * indicadas en el polinomio correspondiente. Estas posiciones se encuentran almacenadas en un vector
- * con punteros a dichas posiciones (que son bits).
+ * Calculamos la xor de todos los bits que se encuentren en las pos indicadas en el polinomio 
+ * correspondiente. Estas posiciones se encuentran almacenadas en un vector que almacena los
+ * bits que se encuentran en las posiciones de interés, calculadas previamente con la función
+ * det_pos().
  * Al calcular el nuevo valor del primer bit, lo introducimos en el registro.
- * Retornamos el valor del bit en la posición más alta.
+ * Retornamos el registro desplazado.
  */
 std::list<std::bitset<1>> a5::desplazar(std::list<std::bitset<1>> x, std::vector<std::bitset<1>> pol_x)
 {

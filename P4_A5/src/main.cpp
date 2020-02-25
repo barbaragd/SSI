@@ -29,6 +29,12 @@ int main()
         switch (op)
         {
         case 1:
+            // std::cout << "> Introducir semilla del 1er registro: ";
+            // std::cin >> a;
+            // std::cout << "> Introducir semilla del 2do registro: ";
+            // std::cin >> b;
+            // std::cout << "> Introducir semilla del 3er registro: ";
+            // std::cin >> c;
             std::cout << "> Introducir longitud: ";
             std::cin >> l;
             std::cout << "----------------------------------------" << std::endl;
