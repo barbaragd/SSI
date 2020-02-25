@@ -3,78 +3,53 @@
 
 int main()
 {
-    std::vector<std::bitset<1>> a;
-    a.push_back(1); // 1001000100011010001
-    a.push_back(0);
-    a.push_back(0);
-    a.push_back(1);
-    a.push_back(0);
-    a.push_back(0);
-    a.push_back(0);
-    a.push_back(1);
-    a.push_back(0);
-    a.push_back(0);
-    a.push_back(0);
-    a.push_back(1);
-    a.push_back(1);
-    a.push_back(0);
-    a.push_back(1);
-    a.push_back(0);
-    a.push_back(0);
-    a.push_back(0);
-    a.push_back(1);
+    int op = 1;
+    int l = 0;
 
-    std::vector<std::bitset<1>> b; // 0101100111100010011010
-    b.push_back(0);
-    b.push_back(1);
-    b.push_back(0);
-    b.push_back(1);
-    b.push_back(1);
-    b.push_back(0);
-    b.push_back(0);
-    b.push_back(1);
-    b.push_back(1);
-    b.push_back(1);
-    b.push_back(1);
-    b.push_back(0);
-    b.push_back(0);
-    b.push_back(0);
-    b.push_back(1);
-    b.push_back(0);
-    b.push_back(0);
-    b.push_back(1);
-    b.push_back(1);
-    b.push_back(0);
-    b.push_back(1);
-    b.push_back(0);
-
-    std::vector<std::bitset<1>> c; // 10111100110111100001111
-    c.push_back(1);
-    c.push_back(0);
-    c.push_back(1);
-    c.push_back(1);
-    c.push_back(1);
-    c.push_back(1);
-    c.push_back(0);
-    c.push_back(0);
-    c.push_back(1);
-    c.push_back(1);
-    c.push_back(0);
-    c.push_back(1);
-    c.push_back(1);
-    c.push_back(1);
-    c.push_back(1);
-    c.push_back(0);
-    c.push_back(0);
-    c.push_back(0);
-    c.push_back(0);
-    c.push_back(1);
-    c.push_back(1);
-    c.push_back(1);
-    c.push_back(1);
+    std::string a = "1001000100011010001";
+    std::string b = "0101100111100010011010";
+    std::string c = "10111100110111100001111";
 
     a5 micifrado(a, b, c);
     std::bitset<1> z;
-    z = micifrado.cifrar();
-    // std::cout << z << std::endl;
+
+    while (op != 0)
+    {
+        std::cout << "----------------------------------------" << std::endl;
+        std::cout << "\t>>> Cifrado A5/1 <<<" << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+        std::cout << "\t1\tCifrar" << std::endl;
+        std::cout << "\t2\tDescifrar" << std::endl;
+        std::cout << "\t0\tSalir" << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+        std::cout << "> Opción: ";
+        std::cin >> op;
+        std::cout << "----------------------------------------" << std::endl;
+
+        switch (op)
+        {
+        case 1:
+            std::cout << "> Introducir longitud: ";
+            std::cin >> l;
+            std::cout << "----------------------------------------" << std::endl;
+            for (int i = 0; i < l; i++)
+            {
+                z = micifrado.cifrar();
+            }
+            std::cout << "[!] ";
+            micifrado.write();
+            break;
+
+        case 2:
+            std::cout << "De momento nada." << std::endl;
+            break;
+
+        case 0:
+            std::cout << "Saliendo..." << std::endl;
+            break;
+
+        default:
+            break;
+        }
+    }
 }
