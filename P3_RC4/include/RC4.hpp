@@ -9,7 +9,7 @@ private:
     std::vector<int> key_;
     std::vector<int> S_;
     std::vector<std::bitset<8>> msj_cif_bin_;
-
+		std::vector<int> valor;
     int i_;
     int j_;
 

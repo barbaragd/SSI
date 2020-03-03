@@ -35,6 +35,8 @@ std::vector<int> string2v_int(std::string msj)
     return mimsj;
 }
 
+
+
 int main()
 {
     int opcion = 1;
@@ -47,7 +49,8 @@ int main()
 
     while (opcion != 0)
     {
-        std::cout << "--------------------------------------------" << std::endl;
+				std::cout << "--------------------------------------------" << std::endl;
+				std::cout << "--------------------------------------------" << std::endl;
         std::cout << ">>> Cifrado en flujo RC4 <<<" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
         std::cout << "1\tCifrar" << std::endl;
@@ -93,7 +96,7 @@ int main()
                 break;
 
             default:
-                std::cout << " > Se introducirá la llave por defecto: 1,34" << std::endl;
+                std::cout << " > Se introducirá la llave por defecto: 2,5" << std::endl;
                 millave = string2v_int("2,5");
                 micifrado.set_key(millave);
                 break;
@@ -120,6 +123,8 @@ int main()
 
         case 0:
             std::cout << "\tSaliendo..." << std::endl;
+						std::cout << "--------------------------------------------" << std::endl;
+						std::cout << "--------------------------------------------" << std::endl;
             break;
 
         default:

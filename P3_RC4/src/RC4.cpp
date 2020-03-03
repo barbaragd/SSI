@@ -68,10 +68,12 @@ void RC4::cifrar(std::vector<int> msj)
     KSA();
     msj_cif_bin_.resize(msj.size());
     std::bitset<8> aux;
+		valor.resize(msj.size());
     for (long unsigned int i = 0; i < msj.size(); i++)
     {
         aux = std::bitset<8>(msj[i]) ^ std::bitset<8>(PRGA());
         msj_cif_bin_[i] = aux;
+				valor[i] = aux.to_ulong();
     }
 }
 
@@ -79,6 +81,6 @@ void RC4::write()
 {
     for (long unsigned int i = 0; i < msj_cif_bin_.size(); i++)
     {
-        std::cout << msj_cif_bin_[i] << std::endl;
+        std::cout << msj_cif_bin_[i] << " [" << valor[i] << "]" << std::endl;
     }
 }
