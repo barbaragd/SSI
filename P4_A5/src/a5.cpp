@@ -1,18 +1,36 @@
 #include "../include/a5.hpp"
 #include <iostream>
 
-a5::a5(std::string va, std::string vb, std::string vc)
+a5::a5()
 {
-    a_ = insertar_semilla(va, a_);
-    b_ = insertar_semilla(vb, b_);
-    c_ = insertar_semilla(vc, c_);
 }
 
 a5::~a5()
 {
 }
 
+void a5::intro_semillas(std::string va, std::string vb, std::string vc)
+{
+    
+    a_ = insertar_semilla(va, a_);
+    b_ = insertar_semilla(vb, b_);
+    c_ = insertar_semilla(vc, c_);
+}
+
+
 void a5::reset() // establecer los vectores con las pos de interés a limpio
+{
+    a_.clear();
+    a_.resize(0);
+    b_.clear();
+    b_.resize(0);
+    c_.clear();
+    c_.resize(0);
+    z_.clear();
+    z_.resize(0);
+}
+
+std::bitset<1> a5::generar()
 {
     pol_a_.clear();
     pol_a_.resize(0);
@@ -20,11 +38,6 @@ void a5::reset() // establecer los vectores con las pos de interés a limpio
     pol_b_.resize(0);
     pol_c_.clear();
     pol_c_.resize(0);
-}
-
-std::bitset<1> a5::cifrar()
-{
-    reset();
     det_pos(a_);
     det_pos(b_);
     det_pos(c_);

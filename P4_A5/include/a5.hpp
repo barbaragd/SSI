@@ -24,10 +24,12 @@ private:
     std::vector<std::bitset<1>> z_;
 
 public:
-    a5(std::string a, std::string b, std::string c);
+    a5();
     ~a5();
-    std::bitset<1> cifrar();
+    void intro_semillas(std::string va, std::string vb, std::string vc);
+    std::bitset<1> generar();
     void write();
+    void reset();
     
 private:
     void mayoria(); // calcular el bit mayoria
@@ -35,5 +37,4 @@ private:
     std::list<std::bitset<1>> desplazar(std::list<std::bitset<1>> x, std::vector<std::bitset<1>> pol_x); // desplazar 
     std::list<std::bitset<1>> insertar_semilla(std::string v, std::list<std::bitset<1>> x);
     void det_pos(std::list<std::bitset<1>> x); // determinar las pos de interés del registro
-    void reset();
 };
