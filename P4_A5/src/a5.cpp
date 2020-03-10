@@ -11,10 +11,26 @@ a5::~a5()
 
 void a5::intro_semillas(std::string va, std::string vb, std::string vc)
 {
-    
     a_ = insertar_semilla(va, a_);
     b_ = insertar_semilla(vb, b_);
     c_ = insertar_semilla(vc, c_);
+    std::cout << "[!] Estado inicial" << std::endl;
+    std::cout << "Registro A: ";
+    for (auto it = a_.begin(); it != a_.end(); it++)
+    {
+        std::cout << (*it) << " ";
+    }
+    std::cout << std::endl << "Registro B: ";
+    for (auto it = b_.begin(); it != b_.end(); it++)
+    {
+        std::cout << (*it) << " ";
+    }
+    std::cout << std::endl << "Registro C: ";
+    for (auto it = c_.begin(); it != c_.end(); it++)
+    {
+        std::cout << (*it) << " ";
+    }
+    std::cout << std::endl << "----------------------------------" << std::endl;
 }
 
 
@@ -48,10 +64,30 @@ std::bitset<1> a5::generar()
 
 void a5::write()
 {
+    // Registros
+    std::cout << "Registro A: ";
+    for (auto it = a_.begin(); it != a_.end(); it++)
+    {
+        std::cout << (*it) << " ";
+    }
+    std::cout << std::endl << "Registro B: ";
+    for (auto it = b_.begin(); it != b_.end(); it++)
+    {
+        std::cout << (*it) << " ";
+    }
+    std::cout << std::endl << "Registro C: ";
+    for (auto it = c_.begin(); it != c_.end(); it++)
+    {
+        std::cout << (*it) << " ";
+    }
+
+    // secuencia generada
+    std::cout << std::endl << "Z: ";
     for (long unsigned int i = 0; i < z_.size(); i++)
     {
         std::cout << z_[i] << " ";
     }
+    
     std::cout << std::endl;
 }
 
@@ -69,11 +105,12 @@ void a5::mayoria()
     {
         mayoria_ = b11_;
     }
+    std::cout << "Bit Mayoría: " << mayoria_ << std::endl;
 }
 
 /**
  * Función para determinar las posiciones a9, b11 y c11 y las posiciones que necesito
- * para determinar la secuencia de salida
+ * para determinar la secuencia de salida, es decir, las del polinomio.
  * 
  * Dependiendo del tamaño del registro determino si es el registro a, b o c. Esto me 
  * interesa porque cada registro tiene unas posiciones de interés diferente.
@@ -174,18 +211,21 @@ void a5::det_desplazar()
     {
         a_.pop_back();
         a_ = desplazar(a_, pol_a_);
+        std::cout << "Registro A se desplaza" << std::endl;
     }
     auxb = b_.back();
     if (b11_ == mayoria_)
     {
         b_.pop_back();
         b_ = desplazar(b_, pol_b_);
+        std::cout << "Registro B se desplaza" << std::endl;
     }
     auxc = c_.back();
     if (c11_ == mayoria_)
     {
         c_.pop_back();
         c_ = desplazar(c_, pol_c_);
+        std::cout << "Registro C se desplaza" << std::endl;
     }
     z_.push_back(auxa ^ auxb ^ auxc);
 }

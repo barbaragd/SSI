@@ -45,9 +45,8 @@ int main()
             for (int i = 0; i < l; i++)
             {
                 z = micifrado.generar();
+                micifrado.write();
             }
-            std::cout << "[!] ";
-            micifrado.write();
             micifrado.reset();
             break;
 
@@ -62,9 +61,8 @@ int main()
             for (int i = 0; i < l; i++)
             {
                 z = micifrado.generar();
+                micifrado.write();
             }
-            std::cout << "[!] ";
-            micifrado.write();
             micifrado.reset();
             break;
             break;
