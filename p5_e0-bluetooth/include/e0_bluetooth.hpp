@@ -1,6 +1,7 @@
 #include <iostream>
 #include <bitset>
 #include <vector>
+#include <iomanip>  // setw()
 
 
 class e0_bluetooth
