@@ -82,11 +82,11 @@ void a5::write()
     }
 
     // secuencia generada
-    std::cout << std::endl << "Z: ";
-    for (long unsigned int i = 0; i < z_.size(); i++)
-    {
-        std::cout << z_[i] << " ";
-    }
+    // std::cout << std::endl << "Z: ";
+    // for (long unsigned int i = 0; i < z_.size(); i++)
+    // {
+    //     std::cout << z_[i] << " ";
+    // }
     
     std::cout << std::endl;
 }
@@ -105,7 +105,8 @@ void a5::mayoria()
     {
         mayoria_ = b11_;
     }
-    std::cout << "Bit Mayoría: " << mayoria_ << std::endl;
+    std::cout << "f(" << a9_ << "," << b11_ << "," << c11_ << ")= ";
+    std::cout << mayoria_ << std::endl;
 }
 
 /**
@@ -228,6 +229,7 @@ void a5::det_desplazar()
         std::cout << "Registro C se desplaza" << std::endl;
     }
     z_.push_back(auxa ^ auxb ^ auxc);
+    std::cout << "Z= " << auxa << "^" << auxb << "^" << auxc << "= " << z_[z_.size() -1] << std::endl;
 }
 
 /**
@@ -240,7 +242,6 @@ void a5::det_desplazar()
  */
 std::list<std::bitset<1>> a5::desplazar(std::list<std::bitset<1>> x, std::vector<std::bitset<1>> pol_x)
 {
-
     std::bitset<1> r_xor = pol_x[0];
     for (long unsigned int i = 1; i < pol_x.size(); i++)
     {
