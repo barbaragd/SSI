@@ -39,11 +39,11 @@ public:
     void insertar_semillas(std::string a, std::string b, std::string c, std::string d, std::string r);
     // void det_polinomios();
     void generar();
-    void write();
 
 private:
     // void det_t(std::bitset<1> c1, std::bitset<1> c0);
     // void det_r(std::bitset<1> c1, std::bitset<1> c1)
     void realimentacion();
     int get_bit(int pos, int reg);
+    void write();
 };

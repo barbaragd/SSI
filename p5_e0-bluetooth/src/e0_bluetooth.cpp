@@ -24,7 +24,7 @@ void e0_bluetooth::insertar_semillas(std::string a, std::string b, std::string c
     std::cout << "LFSR3: " << "      " << LFSR3 << std::endl;
     std::cout << "LFSR4: " << LFSR4 << std::endl;
     std::cout << "R1: " << R1 << std::endl;
-    std::cout << "-------------------------------" << std::endl;
+    std::cout << "---------------------------------------" << std::endl;
 }
 
 // Posicion a la que quiero acceder y luego el registro LFSR al que quiero acceder
