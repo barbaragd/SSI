@@ -12,6 +12,9 @@ std::bitset<8> sumar(std::vector<std::bitset<8>> aux, std::bitset<8> r)
 	return r;
 }
 
+/**
+ * Función para sumar el byte AES o SNOW3G
+ */
 std::bitset<8> op_xor(std::bitset<8> m, int x)
 {
 	std::bitset<8> r;
@@ -48,6 +51,19 @@ void write(std::bitset<8> m1, std::bitset<8> m2, int x)
 	}
 }
 
+/**
+ * m1 = multiplicando
+ * m2 = multiplicador
+ * Si el bit menos significativo de m2 es 1, guardamos en nuestro resultado el valor de m1,
+ * si no, r vale 0.
+ * 
+ * A continuación, desplazamos, y si el bit mas significativo de m1 es 1, además de 
+ * desplazar, sumamos el byte correspondientes (AES o SNOW3G). El resultado de esto es 
+ * el nuevo m1.
+ * 
+ * Luego, si el bit i del multiplicador es 1, guardamos m1 en un vector de bytes para 
+ * finalmente sumar todos los bytes y esté será el resultado final.
+ */
 std::bitset<8> multiplicar(std::bitset<8> m1, std::bitset<8> m2, int x) // m2 = abajo, m1 = arriba
 {
 	write(m1, m2, x);
@@ -61,18 +77,13 @@ std::bitset<8> multiplicar(std::bitset<8> m1, std::bitset<8> m2, int x) // m2 = 
 
 	for (long unsigned int i = 1; i < 8; i++)
 	{
+		std::cout << "desplazo ";
+		m1 <<= 1;
 		if (m1[m1.size() - 1] == 1)
 		{
-			// std::cout << "desplazo y sumo :";
-			m1 <<= 1;
+			// std::cout << "y sumo :";
 			// std::cout << m1;
 			m1 = op_xor(m1, x);
-		}
-		else
-		{
-			// std::cout << "desplazo ";
-			m1 <<= 1;
-			// std::cout << m1;
 		}
 		if (m2[i] == 1)
 		{
