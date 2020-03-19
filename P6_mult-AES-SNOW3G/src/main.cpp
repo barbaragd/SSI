@@ -84,7 +84,7 @@ std::bitset<8> multiplicar(std::bitset<8> m1, std::bitset<8> m2, int x) // m2 = 
 	r = sumar(aux, r);
 	// std::cout << std::endl
 	//   << "Resultado: ";
-	 std::cout << "Multiplicación: ";
+	std::cout << "Multiplicación: ";
 	return r;
 }
 
@@ -92,9 +92,70 @@ int main()
 {
 	int a;
 	int b;
-	std::istringstream("57") >> std::hex >> a;
-	std::istringstream("83") >> std::hex >> b;
+	std::string sa;
+	std::string sb;
+	int op;
 
-	std::cout << multiplicar(a, b, 2) << std::endl << std::endl;
-	std::cout << multiplicar(a, b, 1) << std::endl;
+	do
+	{
+		std::cout << "--------------------------------------------" << std::endl;
+		std::cout << ">> Multiplicación binaria AES y SNOW3G << " << std::endl;
+		std::cout << "--------------------------------------------" << std::endl;
+		std::cout << "\t1. AES" << std::endl;
+		std::cout << "\t2. SNOW3G" << std::endl;
+		std::cout << "\t3. Por defecto" << std::endl;
+		std::cout << "\t0. Salir" << std::endl;
+		std::cout << "--------------------------------------------" << std::endl;
+		std::cout << "> Opción: ";
+		std::cin >> op;
+		std::cout << "--------------------------------------------" << std::endl;
+
+		switch (op)
+		{
+		case 1:
+			std::cout << "> Multiplicando: ";
+			std::cin >> sa;
+			std::cout << "> Multiplicador: ";
+			std::cin >> sb;
+			std::cout << "--------------------------------------------" << std::endl;
+			std::istringstream(sa) >> std::hex >> a;
+			std::istringstream(sb) >> std::hex >> b;
+			std::cout << multiplicar(a, b, 2) << std::endl;
+
+			break;
+
+		case 2:
+			std::cout << "> Multiplicando: ";
+			std::cin >> sa;
+			std::cout << "> Multiplicador: ";
+			std::cin >> sb;
+			std::cout << "--------------------------------------------" << std::endl;
+			std::istringstream(sa) >> std::hex >> a;
+			std::istringstream(sb) >> std::hex >> b;
+			std::cout << multiplicar(a, b, 1) << std::endl;
+
+			break;
+
+		case 3:
+			std::istringstream("57") >> std::hex >> a;
+			std::istringstream("83") >> std::hex >> b;
+
+			std::cout << "[!]\tAES" << std::endl;
+			std::cout << "--------------------------" << std::endl;
+			std::cout << multiplicar(a, b, 2) << std::endl;
+			std::cout << "--------------------------" << std::endl;
+			std::cout << "[!]\tSNOW 3G" << std::endl;
+			std::cout << "--------------------------" << std::endl;
+			std::cout << multiplicar(a, b, 1) << std::endl;
+			break;
+
+		case 0:
+			std::cout << "Saliendo..." << std::endl;
+			std::cout << "--------------------------------------------" << std::endl;
+			break;
+		default:
+			break;
+		}
+
+	} while (op != 0);
 }
