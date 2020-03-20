@@ -26,9 +26,7 @@ std::bitset<8> op_xor(std::bitset<8> m, int x)
 		break;
 
 	case 2: // AES
-		// std::cout << " con 00011011 y me da: ";
 		r = m ^ std::bitset<8>("00011011");
-		// std::cout << r << std::endl;
 		return r;
 		break;
 
@@ -72,29 +70,24 @@ std::bitset<8> multiplicar(std::bitset<8> m1, std::bitset<8> m2, int x) // m2 = 
 	if (m2[0] == 1)
 	{
 		r = m1;
-		// std::cout << "1era iter: " << r << std::endl;
 	}
 
 	for (long unsigned int i = 1; i < 8; i++)
 	{
-		std::cout << "desplazo ";
-		m1 <<= 1;
 		if (m1[m1.size() - 1] == 1)
 		{
-			// std::cout << "y sumo :";
-			// std::cout << m1;
+			m1 <<= 1;
 			m1 = op_xor(m1, x);
+		}
+		else{
+			m1 <<= 1;
 		}
 		if (m2[i] == 1)
 		{
-			// std::cout << "\tguardo ";
 			aux.push_back(m1);
 		}
-		// std::cout << std::endl;
 	}
 	r = sumar(aux, r);
-	// std::cout << std::endl
-	//   << "Resultado: ";
 	std::cout << "Multiplicación: ";
 	return r;
 }
