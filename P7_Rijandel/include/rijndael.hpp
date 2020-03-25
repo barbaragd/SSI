@@ -22,13 +22,14 @@ public:
     ~rijndael();
     void set_key(std::vector<std::vector<int>> key);
     void set_entrada(std::vector<std::vector<int>> entrada);
+    void algoritmo();
 
 private:
     void set_Rcon();
     void set_Scon();
     int get_data_Scon(int i, int j);
 
-    void expan_key(std::vector<std::vector<int>> key);
+    void expan_key();
     void AddRoundKey();
     void SubBytes();
     void ShiftRows();
