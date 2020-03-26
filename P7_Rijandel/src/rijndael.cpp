@@ -14,16 +14,16 @@ rijndael::~rijndael()
 void rijndael::set_Rcon()
 {
     Rc.resize(10);
-    Rc[0] = 0x01000000;
-    Rc[1] = 0x02000000;
-    Rc[2] = 0x04000000;
-    Rc[3] = 0x08000000;
-    Rc[4] = 0x10000000;
-    Rc[5] = 0x20000000;
-    Rc[6] = 0x40000000;
-    Rc[7] = 0x80000000;
-    Rc[8] = 0x1B000000;
-    Rc[9] = 0x36000000;
+    Rc[0] = {0x1, 0x0, 0x0, 0x0};
+    Rc[1] = {0x2, 0x0, 0x0, 0x0};
+    Rc[2] = {0x4, 0x0, 0x0, 0x0};
+    Rc[3] = {0x8, 0x0, 0x0, 0x0};
+    Rc[4] = {0x10, 0x0, 0x0, 0x0};
+    Rc[5] = {0x20, 0x0, 0x0, 0x0};
+    Rc[6] = {0x40, 0x0, 0x0, 0x0};
+    Rc[7] = {0x80, 0x0, 0x0, 0x0};
+    Rc[8] = {0x1B, 0x0, 0x0, 0x0};
+    Rc[9] = {0x36, 0x0, 0x0, 0x0};
 }
 
 void rijndael::set_Scon()
@@ -66,6 +66,15 @@ void rijndael::set_key(std::vector<std::vector<int>> key)
             expkey_[i][j] = key[i][j];
         }
     }
+
+    // for (int j = 0; j < 4; j++)
+    // {
+    //     for (int i = 0; i < 4; i++)
+    //     {
+    //         std::cout << std::hex << expkey_[j][i] << " , ";
+    //     }
+    //     std::cout << std::endl;
+    // }
 }
 
 void rijndael::set_entrada(std::vector<std::vector<int>> entrada)
@@ -78,16 +87,21 @@ void rijndael::set_entrada(std::vector<std::vector<int>> entrada)
  */
 void rijndael::expan_key()
 {
-    int W_1[4]; // Wi - 1
     int copy;
-    int W_4[4]; // Wi - 4
+    int iter_rc = 0;
+    std::vector<int> W_1;
+    W_1.resize(4); // Wi - 1
+    std::vector<int> W_4;
+    W_4.resize(4); // Wi - 4
 
     // int aux_dec;
     // std::string saux_dec;
+
     for (int j = 4; j < 44; j++)
     {
         for (int i = 0; i < 4; i++)
         {
+            // std::cout << expkey_[i][j - 1] << "," << expkey_[i][j - 4] << std::endl;
             W_1[i] = expkey_[i][j - 1]; // columna anterior (byte anterior)
             W_4[i] = expkey_[i][j - 4]; // guardamos el primer byte de la matriz anterior
         }
@@ -109,20 +123,29 @@ void rijndael::expan_key()
             // Sub Bytes
             for (int k = 0; k < 4; k++)
             {
+                // std::cout << "S pos: " << W_1[k] << std::endl;
                 W_1[k] = Sbox[W_1[k]];
+                // std::cout << "W: " << W_1[k] << std::endl;
             }
 
+            // std::cout << "Nueva columna: ";
             for (int i = 0; i < 4; i++)
             {
-                expkey_[i][j] = W_4[i] ^ W_1[i] ^ Rc[j];
+                expkey_[i][j] = W_4[i] ^ W_1[i] ^ Rc[iter_rc][i]; // peude ser módulo 10
+                // std::cout << expkey_[i][j] << ",";
             }
+            iter_rc++;
+            // std::cout << std::endl;
         }
         else // para las columnas que no son múltiplo de 4
         {
+            // std::cout << "Nueva columna: ";
             for (int i = 0; i < 4; i++)
             {
                 expkey_[i][j] = W_1[i] ^ W_4[i];
+                // std::cout << expkey_[i][j] << ",";
             }
+            // std::cout << std::endl;
         }
     }
 }
@@ -176,58 +199,59 @@ void rijndael::ShiftRows()
     fila = 3; // rotamos tres pos
     copy = est_inter[fila][0];
     est_inter[fila][0] = est_inter[fila][3];
-    est_inter[fila][3] = copy;
-    copy = est_inter[fila][1];
-    est_inter[fila][1] = est_inter[fila][2];
-    est_inter[fila][2] = copy;
+    est_inter[fila][3] = est_inter[fila][2];
+    est_inter[fila][2] = est_inter[fila][1];
+    est_inter[fila][1] = copy;
 }
 
 void rijndael::MixColumn()
 {
-    std::vector<int> aux;
-    aux.resize(4);
+    // std::vector<int> aux;
+    // aux.resize(4);
+    // for (int k = 0; k < 4; k++)
+    // {
+    //     // seleccionar las columns
+    //     for (int i = 0; i < 4; i++)
+    //     {
+    //         aux[i] = est_inter[i][k];
+    //     }
+    // }
+    unsigned char a[4];
+    unsigned char b[4];
+    unsigned char c, j;
+    unsigned char h;
 
-    // matriz para la multiplicación
-    std::vector<std::vector<int>> matriz;
-    matriz.resize(4);
-    for (int x = 0; x < 4; x++)
+    for (j = 0; j < 4; j++)
     {
-        matriz[x].resize(4, 0x1);
-    }
-    matriz[0][0] = matriz[1][1] = matriz[2][2] = matriz[3][3] = 0x2;
-    matriz[0][1] = matriz[1][2] = matriz[2][3] = matriz[3][0] = 0x3;
-
-    int a;
-
-    for (int k = 0; k < 4; k++)
-    {
-        // seleccionar las columns
-        for (int i = 0; i < 4; i++)
+        for (c = 0; c < 4; c++)
         {
-            aux[i] = est_inter[i][k];
+            a[c] = est_inter[c][j];
+            h = est_inter[c][j] & 0x80;
+            b[c] = est_inter[c][j] << 1;
+            if (h == 0x80)
+                b[c] ^= 0x1B;
         }
-        for (int i = 0; i < 4; i++)
-        {
-            a = 0;
-            for (int j = 0; j < 4; j++)
-            {
-                // std::cout << matriz[i][j] << " XOR " << aux[j] << " = ";
-                a ^= matriz[i][j] * aux[j];
-                // std::cout << a << std::endl;
-            }
-            // std::cout << "a: " << std::hex << a << std::endl;
-            est_inter[i][k] = a;
-        }
+        est_inter[0][j] = b[0] ^ a[3] ^ a[2] ^ b[1] ^ a[1];
+        est_inter[1][j] = b[1] ^ a[0] ^ a[3] ^ b[2] ^ a[2];
+        est_inter[2][j] = b[2] ^ a[1] ^ a[0] ^ b[3] ^ a[3];
+        est_inter[3][j] = b[3] ^ a[2] ^ a[1] ^ b[0] ^ a[0];
+
+        // std::cout << "resultados: " << std::endl;
+        // std::cout << est_inter[0][j] << std::endl;
+        // std::cout << est_inter[1][j] << std::endl;
+        // std::cout << est_inter[2][j] << std::endl;
+        // std::cout << est_inter[3][j] << std::endl;
     }
 }
 
 void rijndael::AddRoundKey2(int iter)
 {
-    for (int i = 0; i < 4; i++)
+    int j_ini = 4 * iter;
+    for (int j = 0; j < 4; j++)
     {
-        for (int j = 0; j < 4; j++)
+        for (int i = 0; i < 4; i++)
         {
-            est_inter[i][j] = est_inter[i][j] ^ expkey_[i][j + iter];
+            est_inter[i][j] = est_inter[i][j] ^ expkey_[i][j + j_ini];
         }
     }
 
@@ -237,7 +261,7 @@ void rijndael::AddRoundKey2(int iter)
     {
         for (int j = 0; j < 4; j++)
         {
-            std::cout << expkey_[i][j + iter];
+            std::cout << expkey_[i][j + j_ini];
         }
     }
 
@@ -273,15 +297,70 @@ void rijndael::algoritmo()
             std::cout << std::hex << entrada_[i][j];
         }
     }
+    std::cout << std::endl;
+    expan_key();
+    std::cout << "Subclave = ";
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            std::cout << expkey_[i][j + 1];
+        }
+    }
+    std::cout << std::endl;
 
     AddRoundKey();
-    for (int i = 1; i < 11; i++)
+    for (int iter = 1; iter < 10; iter++)
     {
         SubBytes();
+        // std::cout << "Después de SubBytes: " << std::endl;
+        // for (int i = 0; i < 4; i++)
+        // {
+        //     for (int j = 0; j < 4; j++)
+        //     {
+        //         std::cout << est_inter[i][j] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+
         ShiftRows();
+        // std::cout << "Después de ShiftRows: " << std::endl;
+        // for (int i = 0; i < 4; i++)
+        // {
+        //     for (int j = 0; j < 4; j++)
+        //     {
+        //         std::cout << est_inter[i][j] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+
         MixColumn();
-        AddRoundKey2(i);
+        // std::cout << "Después de MixColumn: " << std::endl;
+        // for (int i = 0; i < 4; i++)
+        // {
+        //     for (int j = 0; j < 4; j++)
+        //     {
+        //         std::cout << est_inter[i][j] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+
+        AddRoundKey2(iter);
+        // std::cout << "Después de AddRoundKey2: " << std::endl;
+        // for (int i = 0; i < 4; i++)
+        // {
+        //     for (int j = 0; j < 4; j++)
+        //     {
+        //         std::cout << est_inter[i][j] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+        // std::cout << std::endl;
     }
+    // ultima iter
+    SubBytes();
+    ShiftRows();
+    AddRoundKey2(10);
 
     std::cout << std::endl
               << "Bloque de texto cifrado: ";
@@ -289,7 +368,7 @@ void rijndael::algoritmo()
     {
         for (long unsigned int j = 0; j < est_inter[i].size(); j++)
         {
-            std::cout << std::hex << est_inter[i][j];
+            std::cout << est_inter[i][j];
         }
         std::cout << std::endl;
     }

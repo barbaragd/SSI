@@ -7,7 +7,7 @@
 class rijndael
 {
 private:
-    std::vector<int> Rc;
+    std::vector<std::vector<int>> Rc;
     std::vector<int> Sbox; // pos = i * tmño_fila + j
 
     std::vector<std::vector<int>> expkey_; // clave expandida
