@@ -8,7 +8,7 @@ class rijndael
 {
 private:
     std::vector<std::vector<int>> Rc;
-    std::vector<int> Sbox; // pos = i * tmño_fila + j
+    std::vector<int> Sbox; 
 
     std::vector<std::vector<int>> expkey_; // clave expandida
     std::vector<std::vector<int>> key_;    // clave sin expandir
@@ -27,12 +27,12 @@ public:
 private:
     void set_Rcon();
     void set_Scon();
-    int get_data_Scon(int i, int j);
 
     void expan_key();
-    void AddRoundKey();
+    void AddRoundKey1();
+    
+    void AddRoundKey(int iter);
     void SubBytes();
     void ShiftRows();
     void MixColumn();
-    void AddRoundKey2(int iter);
 };
