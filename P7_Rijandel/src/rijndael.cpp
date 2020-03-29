@@ -1,5 +1,4 @@
 #include "../include/rijndael.hpp"
-// para acceder a las posiciones => pos = i * tmño_fila + j
 
 rijndael::rijndael()
 {
@@ -104,7 +103,6 @@ void rijndael::expan_key()
             W_1[2] = W_1[3];
             W_1[3] = copy;
 
-
             // Sub Bytes
             for (int k = 0; k < 4; k++)
             {
@@ -113,13 +111,12 @@ void rijndael::expan_key()
 
             for (int i = 0; i < 4; i++)
             {
-                expkey_[i][j] = W_4[i] ^ W_1[i] ^ Rc[iter_rc][i]; // peude ser módulo 10
+                expkey_[i][j] = W_4[i] ^ W_1[i] ^ Rc[iter_rc][i]; 
             }
             iter_rc++;
         }
         else // para las columnas que no son múltiplo de 4
         {
-            // std::cout << "Nueva columna: ";
             for (int i = 0; i < 4; i++)
             {
                 expkey_[i][j] = W_1[i] ^ W_4[i];
