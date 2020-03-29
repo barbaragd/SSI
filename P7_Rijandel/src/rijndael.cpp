@@ -278,7 +278,7 @@ void rijndael::algoritmo()
     {
         for (long unsigned int i = 0; i < entrada_[j].size(); i++)
         {
-            std::cout << std::hex << entrada_[i][j];
+            std::cout << std::hex << entrada_[i][j] << " ";
         }
     }
     std::cout << std::endl;
