@@ -89,8 +89,8 @@ void rijndael::expan_key()
     {
         for (int i = 0; i < 4; i++)
         {
-            W_1[i] = expkey_[i][j - 1]; // columna anterior (byte anterior)
-            W_4[i] = expkey_[i][j - 4]; // guardamos el primer byte de la matriz anterior
+            W_1[i] = expkey_[i][j - 1]; // columna anterior 
+            W_4[i] = expkey_[i][j - 4]; // guardamos la primera columna de la matriz anterior
         }
         if (j % 4 == 0)
         {

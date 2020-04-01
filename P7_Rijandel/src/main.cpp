@@ -6,16 +6,8 @@ int main()
 {
 	std::vector<std::vector<int>> key;
 	key.resize(4);
-	key[0].resize(4);
-	key[1].resize(4);
-	key[2].resize(4);
-	key[3].resize(4);
 	std::vector<std::vector<int>> entrada;
 	entrada.resize(4);
-	entrada[0].resize(4);
-	entrada[1].resize(4);
-	entrada[2].resize(4);
-	entrada[3].resize(4);
 
 	int op = 0;
 	rijndael micifrado;
