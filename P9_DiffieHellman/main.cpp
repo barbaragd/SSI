@@ -1,8 +1,7 @@
 #include <iostream>
 
-int exp_rapida (int a, int b, int m){
+int exp_rapida (int y, int b, int m){
     int x = 1;
-    int y = a;
     while((b>0) && (y>1)){
         if((b%2)==0){ // si es par
             y = (y * y) % m;
