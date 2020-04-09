@@ -22,7 +22,13 @@ int main()
 	std::vector<std::vector<int>> salida;
 	int op = 0;
 	rijndael aes;
-	std::string aux;
+	std::string teclado;
+	int cols;
+	int lrow;
+
+	std::vector<std::vector<int>> intermedio;
+	int penultimo;
+	int ultimo;
 
 	do
 	{
@@ -31,7 +37,6 @@ int main()
 		std::cout << "------------------------------------------------" << std::endl;
 		std::cout << "\t1\tIntroducir valores" << std::endl;
 		std::cout << "\t2\tValores por defecto" << std::endl;
-		std::cout << "\t3\tCipher Stealing" << std::endl;
 		std::cout << "\t0\tSalir" << std::endl;
 		std::cout << "------------------------------------------------" << std::endl;
 		std::cout << "> Opción: ";
@@ -41,7 +46,6 @@ int main()
 		switch (op)
 		{
 		case 1:
-		case 3:
 			std::cout << "> Clave (16 bytes): " << std::endl;
 			key.resize(4);
 			for (int i = 0; i < 4; i++)
@@ -53,8 +57,8 @@ int main()
 				for (int i = 0; i < 4; i++)
 				{
 					std::cout << "[" << i << "][" << j << "] = ";
-					std::cin >> aux;
-					std::istringstream(aux) >> std::hex >> key[i][j];
+					std::cin >> teclado;
+					std::istringstream(teclado) >> std::hex >> key[i][j];
 				}
 			}
 
@@ -62,7 +66,7 @@ int main()
 			std::cout << "> Número de bloques: ";
 			std::cin >> b;
 			bloques.resize(b);
-			for (long unsigned int k = 0; k < bloques.size(); k++)
+			for (long unsigned int k = 0; k < bloques.size() - 1; k++)
 			{
 				bloques[k].resize(4);
 				for (int i = 0; i < 4; i++)
@@ -76,77 +80,144 @@ int main()
 					for (int i = 0; i < 4; i++)
 					{
 						std::cout << "[" << i << "][" << j << "] > ";
-						std::cin >> aux;
-						std::istringstream(aux) >> std::hex >> bloques[k][i][j];
+						std::cin >> teclado;
+						std::istringstream(teclado) >> std::hex >> bloques[k][i][j];
 					}
 				}
 			}
 
-			std::cout << "------------------------------------------------" << std::endl;
-			aes.set_key(key);
+			std::cout << "[!] Último bloque." << std::endl
+					  << "> ¿Bytes? ";
+			std::cin >> b;
+			if (b < 4)
+			{
+				bloques[bloques.size() - 1].resize(b);
+				for (int i = 0; i < b; i++)
+				{
+					bloques[bloques.size() - 1][i].resize(1, 0x0);
+				}
+				cols = 1;
+				lrow = b; // elementos que hay en la ultima fila
+			}
+			else
+			{
+				bloques[bloques.size() - 1].resize(4);
+				for (int i = 0; i < 4; i++)
+				{
+					if (b % 4 == 0)
+					{
+						bloques[bloques.size() - 1][i].resize(b / 4, 0x0);
+						cols = b / 4;
+						lrow = 4;
+					}
+					else
+					{
+						bloques[bloques.size() - 1][i].resize(b / 4 + 1, 0x0);
+						cols = b / 4 + 1;
+						lrow = b % 4;
+					}
+				}
+
+				for (int j = 0; j < cols - 1; j++)
+				{
+					for (int i = 0; i < 4; i++)
+					{
+						std::cout << "[" << i << "][" << j << "] > ";
+						std::cin >> teclado;
+						std::istringstream(teclado) >> std::hex >> bloques[bloques.size() - 1][i][j];
+					}
+				}
+				for (int i = 0; i < lrow; i++)
+				{
+					std::cout << "[" << i << "][" << cols - 1 << "] > ";
+					std::cin >> teclado;
+					std::istringstream(teclado) >> std::hex >> bloques[bloques.size() - 1][i][cols - 1];
+				}
+			}
+			// rellenar el resto con ceros
+			if (cols < 4)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					for (int c = cols - 1; c < 4; c++)
+					{
+						bloques[bloques.size() - 1][i].push_back(0x0);
+					}
+					if (/*(lrow < 4) && */(bloques[bloques.size() - 1][i].size() < 4))
+					{
+						bloques[bloques.size() - 1][i].push_back(0x0);
+					}
+				}
+			}
+
 			for (int i = 0; i < 4; i++)
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					bloques[0][i][j] = bloques[0][i][j] ^ iv[i][j]; // primer bloque
+					std::cout << std::hex << bloques[bloques.size() - 1][i][j] << " ";
+				}
+				std::cout << std::endl;
+			}
+
+			std::cout << "------------------------------------------------" << std::endl;
+			aes.set_key(key);
+			salida = iv;
+
+			for (long unsigned int i = 0; i < bloques.size() - 2; i++) // hacemos el mismo procedimiento hasta llegar a los dos últimos bloques
+			{
+				std::cout << "aqui";
+				for (int j = 0; j < 4; j++)
+				{
+					for (int k = 0; k < 4; k++)
+					{
+						bloques[i][j][k] = bloques[i][j][k] ^ salida[j][k];
+					}
+				}
+				aes.set_entrada(bloques[i]);
+				salida = aes.algoritmo();
+				bloques[i] = salida;
+			}
+
+			// dos ultimos bloques:
+			penultimo = bloques.size() - 2;
+			ultimo = bloques.size() - 1;
+
+			for (int j = 0; j < 4; j++)
+			{
+				for (int k = 0; k < 4; k++)
+				{
+					bloques[penultimo][j][k] = bloques[penultimo][j][k] ^ salida[j][k];
 				}
 			}
-			aes.set_entrada(bloques[0]);
+			aes.set_entrada(bloques[penultimo]);
+			salida = aes.algoritmo();
+			intermedio = salida;
+
+			for (int j = 0; j < 4; j++)
+			{
+				for (int k = 0; k < 4; k++)
+				{
+					bloques[ultimo][j][k] = bloques[ultimo][j][k] ^ salida[j][k];
+				}
+			}
+			aes.set_entrada(bloques[ultimo]);
 			salida = aes.algoritmo();
 
-			if (bloques[bloques.size() - 1].size() < 16)
-			{															   // si el último bloque no es múltiplo
-				for (long unsigned int i = 1; i < bloques.size() - 2; i++) // hacemos el mismo procedimiento hasta llegar a los dos últimos bloques
+			bloques[penultimo] = salida;
+			bloques[ultimo] = intermedio;
+
+			for (long unsigned int k = 0; k < bloques.size(); k++)
+			{
+				std::cout << "Bloque " << k + 1 << ": " << std::endl;
+				for (int i = 0; i < 4; i++)
 				{
 					for (int j = 0; j < 4; j++)
 					{
-						for (int k = 0; k < 4; k++)
-						{
-							bloques[i][j][k] = bloques[i][j][k] ^ salida[j][k];
-						}
+						std::cout << std::hex << bloques[k][i][j] << " ";
 					}
-					aes.set_entrada(bloques[i]);
-					salida = aes.algoritmo();
+					std::cout << std::endl;
 				}
-
-				std::vector<std::vector<int>> intermedio;
-
-				int penultimo = bloques.size() - 2;
-				int ultimo = bloques.size() - 1;
-				for (int j = 0; j < 4; j++)
-				{
-					for (int k = 0; k < 4; k++)
-					{
-						bloques[penultimo][j][k] = bloques[penultimo][j][k] ^ salida[j][k];
-					}
-				}
-				aes.set_entrada(bloques[penultimo]);
-				salida = aes.algoritmo();
-
-				for (int j = 0; j < 4; j++)
-				{
-					for (int k = 0; k < 4; k++)
-					{
-						bloques[ultimo][j][k] = bloques[penultimo][j][k] ^ salida[j][k];
-					}
-				}
-
-
-			}
-			else
-			{ // si sí es, hacemos lo normal :
-				for (long unsigned int i = 1; i < bloques.size(); i++)
-				{
-					for (int j = 0; j < 4; j++)
-					{
-						for (int k = 0; k < 4; k++)
-						{
-							bloques[i][j][k] = bloques[i][j][k] ^ salida[j][k];
-						}
-					}
-					aes.set_entrada(bloques[i]);
-					salida = aes.algoritmo();
-				}
+				std::cout << std::endl;
 			}
 
 			break;
@@ -184,6 +255,7 @@ int main()
 			}
 			aes.set_entrada(bloques[0]);
 			salida = aes.algoritmo();
+			bloques[0] = salida;
 
 			for (long unsigned int i = 1; i < bloques.size(); i++)
 			{
@@ -196,6 +268,21 @@ int main()
 				}
 				aes.set_entrada(bloques[i]);
 				salida = aes.algoritmo();
+				bloques[i] = salida;
+			}
+
+			for (long unsigned int k = 0; k < bloques.size(); k++)
+			{
+				std::cout << "Bloque " << k + 1 << ": " << std::endl;
+				for (int i = 0; i < 4; i++)
+				{
+					for (int j = 0; j < 4; j++)
+					{
+						std::cout << std::hex << bloques[k][i][j] << " ";
+					}
+					std::cout << std::endl;
+				}
+				std::cout << std::endl;
 			}
 
 			break;
