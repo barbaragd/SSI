@@ -256,7 +256,7 @@ void rijndael::AddRoundKey(int iter)
     // std::cout << std::endl;
 }
 
-std::vector<std::vector<int>> rijndael::algoritmo()
+std::vector<int> rijndael::algoritmo()
 {
     // std::cout << "Clave: ";
     // for (long unsigned int j = 0; j < key_.size(); j++)
@@ -291,16 +291,20 @@ std::vector<std::vector<int>> rijndael::algoritmo()
     SubBytes();
     ShiftRows();
     AddRoundKey(10);
+    
+    std::vector<int> salida;
+
+
 
     // std::cout << "Bloque de texto cifrado: ";
-    // for (long unsigned int j = 0; j < est_inter.size(); j++)
-    // {
-    //     for (long unsigned int i = 0; i < est_inter[j].size(); i++)
-    //     {
-    //         std::cout << std::hex << est_inter[i][j] << " ";
-    //     }
-    // }
+    for (long unsigned int j = 0; j < est_inter.size(); j++)
+    {
+        for (long unsigned int i = 0; i < est_inter[j].size(); i++)
+        {
+            salida.push_back(est_inter[i][j]);
+        }
+    }
     // std::cout << std::endl;
 
-    return est_inter;
+    return salida;
 }

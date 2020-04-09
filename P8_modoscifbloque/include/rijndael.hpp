@@ -22,7 +22,7 @@ public:
     ~rijndael();
     void set_key(std::vector<std::vector<int>> key);
     void set_entrada(std::vector<std::vector<int>> entrada);
-    std::vector<std::vector<int>> algoritmo();
+    std::vector<int> algoritmo();
 
 private:
     void set_Rcon();
