@@ -56,7 +56,7 @@ int main()
 
 		// Respuesta: A envía a B
 		if (e == 0)
-			y = x % N;
+			y = x;
 		else
 			y = (x * s) % N;
 
