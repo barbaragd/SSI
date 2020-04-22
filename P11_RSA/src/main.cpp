@@ -38,12 +38,21 @@ bool testLehmanPeralta(int v)
 
 bool testEuclides(int d, int fi)
 {
-	// int i=0;
-	int z = 0;
-	int x = 0;
+	int i = 1;
+	std::vector<unsigned int> x;
+	std::vector<unsigned int> z;
+	x.push_back(fi);
+	x.push_back(d);
+	z.push_back(0);
+	z.push_back(1);
+	int aux = 0;
 
-	x = fi / d;
-	// z es los dos anterios
+	while (x[x.size() - 1] != 0)
+	{
+		x.push_back(x[i - 1] / x[i]);
+		aux = (x[i - 1] / x[i] * z[i - 1] + z[i - 2]) % fi;
+		z.push_back(aux);
+	}
 }
 
 int exp_rapida(int y, int b, int m)
@@ -65,22 +74,30 @@ int exp_rapida(int y, int b, int m)
 	return x;
 }
 
+void cifrado()
+{
+}
+
 int main()
 {
 	int p, q, d, fi;
+	bool flag = true;
+	do
+	{
+		std::cout << "> p: ";
+		std::cin >> p;
+		std::cout << "> q: ";
+		std::cin >> q;
+		std::cout << "> d: ";
+		std::cin >> d;
 
-	std::cout << "> p: ";
-	std::cin >> p;
-	std::cout << "> q: ";
-	std::cin >> q;
-	std::cout << "> d: ";
-	std::cin >> d;
+		fi = (p - 1) * (q - 1);
 
-	fi = (p - 1) * (q - 1);
+		// comprobaciones
+		flag = testLehmanPeralta(p);
+		flag = testLehmanPeralta(q);
+		flag = testEuclides(d, fi);
+	} while (!flag);
 
-	// comprobaciones
-	testLehmanPeralta(p);
-	testLehmanPeralta(q);
-
-	testEuclides(d, fi);
+	cifrado(); // falta implementar aqui
 }
