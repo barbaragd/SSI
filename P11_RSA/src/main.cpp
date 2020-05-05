@@ -156,6 +156,14 @@ void RSA(int n, int e, std::string men)
 
 	std::vector<int> msj_codificado;
 	std::vector<int> msj_cifrado;
+
+	// Comprobar que el msj es múltiplo del tamaño del bloque	
+	int aux = mensaje.size() % tamBlock;
+	if(aux!=0){
+		for(int i=0; i<(tamBlock - aux); i++){
+			mensaje.push_back('X');
+		}
+	}
 	for (long unsigned int i = 0; i < mensaje.size(); i++)
 	{
 		std::string cadaux (mensaje,i,tamBlock);
