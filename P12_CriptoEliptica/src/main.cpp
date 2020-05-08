@@ -66,21 +66,29 @@ int main()
 	std::cout << "Clave privada de B: ";
 	std::cin >> dB;
 
-	std::cout << "Mensaje (número).";
+	std::cout << "Mensaje (número): ";
 	std::cin >> m;
-	// 		  << "> Coordenada x: ";
-	// std::cin >> x;
-	// std::cout << "> Coordenada y: ";
-	// std::cin >> y;
-	// punto Qm(x, y);
-	while (M < m)
+	while (M <= m)
 	{
 		M *= 2;
 	}
 
 	// codificar punto
 	int h = p/M;
-	// punto qM()
+	for(int j=0; j<puntos.size();j++){
+		x = m * h + j;
+		for(int k=0; k<puntos.size();k++){
+			if(x==puntos[k].get_x()){
+				y = puntos[k].get_y();
+				k = puntos.size();
+				j = puntos.size();
+			}
+		}
+	}
+	punto Qm(x,y);
+	std::cout << "Mensaje original codificado como punto: ";
+	Qm.write();
+	std::cout << std::endl;
 
 	int aA = 4;
 	std::cout << "Clave pública de B: ";
