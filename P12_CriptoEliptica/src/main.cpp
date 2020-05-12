@@ -75,9 +75,9 @@ int main()
 
 	// codificar punto
 	int h = p/M;
-	for(int j=0; j<puntos.size();j++){
+	for(long unsigned int j=0; j<puntos.size();j++){
 		x = m * h + j;
-		for(int k=0; k<puntos.size();k++){
+		for(long unsigned int k=0; k<puntos.size();k++){
 			if(x==puntos[k].get_x()){
 				y = puntos[k].get_y();
 				k = puntos.size();
